@@ -1,0 +1,114 @@
+
+-------------------------------------------------------------------------------------------------------
+----    Things to tweak on the project files
+
+>>      encyclopedia/util.py
+
+import re
+
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+
+path_to_entries = "/var/www/projects/project-1-wiki/wiki/"                  # <-- added this
+
+def list_entries():
+    """
+    Returns a list of all names of encyclopedia entries.
+    """
+    _, filenames = default_storage.listdir(path_to_entries + "entries")     # <-- added this
+    return list(sorted(re.sub(r"\.md$", "", filename)
+                for filename in filenames if filename.endswith(".md")))
+
+
+def save_entry(title, content):
+    """
+    Saves an encyclopedia entry, given its title and Markdown
+    content. If an existing entry with the same title already exists,
+    it is replaced.
+    """
+    filename = path_to_entries + f"entries/{title}.md"                      # <-- added this
+    if default_storage.exists(filename):
+        default_storage.delete(filename)
+    default_storage.save(filename, ContentFile(content.encode("utf-8")))    # <-- added .encode("utf-8")
+
+
+def get_entry(title):
+    """
+    Retrieves an encyclopedia entry by its title. If no such
+    entry exists, the function returns None.
+    """
+    try:
+        f = default_storage.open(path_to_entries + f"entries/{title}.md")   # <-- added this
+        return f.read().decode("utf-8") # returns the contents of the file
+    except FileNotFoundError:
+        return None
+
+
+
+>>      settings.py
+
+        - changing SECRET_KEY location is pending
+
+DEBUG = False
+
+ALLOWED_HOSTS = ["34.171.109.67"]
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
+
+
+
+
+-------------------------------------------------------------------------------------------------------
+----    Things to run after tweaking the project files
+
+
+>>      static files
+
+        (env) $ python manage.py collectstatic      --> after running, it will show where it put the static files.
+                                                    --> add the path to the apache vhost config (see below)
+
+
+>>      permissions for wiki/entries/
+
+        - first add group ownership of entire project to apache
+
+            $ chown :www-data wiki
+
+        - add group ownership to apache to 'entries' and change permissions
+
+            $ chown -R :www-data wiki/entries/
+            
+            $ chmod -R 775 wiki/entries/
+
+
+-------------------------------------------------------------------------------------------------------
+----    Apache's vHost config file
+
+        - project-1-wiki.conf
+
+Listen 8083
+<VirtualHost *:8083>
+
+        WSGIDaemonProcess wiki python-home=/var/www/projects/project-1-wiki/env python-path=/var/www/projects/project-1-wiki/wiki user=www-data group=www-data threads=5
+        WSGIScriptAlias / /var/www/projects/project-1-wiki/wiki/wiki/wsgi.py
+        WSGIProcessGroup wiki
+        WSGIApplicationGroup %{GLOBAL}
+
+        <Directory /var/www/projects/project-1-wiki/wiki/wiki>
+                <Files wsgi.py>
+                        Require all granted
+                </Files>
+        </Directory>
+
+        Alias /static /var/www/projects/project-1-wiki/wiki/staticfiles
+        <Directory /var/www/projects/project-1-wiki/wiki/staticfiles>
+                Require all granted
+        </Directory>
+
+        ErrorLog /var/www/projects/project-1-wiki/error.log
+        CustomLog /var/www/projects/project-1-wiki/access.log combined
+</VirtualHost>

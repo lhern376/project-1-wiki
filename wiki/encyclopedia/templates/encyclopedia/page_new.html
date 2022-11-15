@@ -1,0 +1,27 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    New Page
+{% endblock %}
+
+{% block body %}
+    <h1>Create a new page</h1>
+    <hr>
+    <form action="" method="post" class="custom-form">
+        {% csrf_token %}
+        {% if error %} 
+            <div class="form-error">An entry for <strong>"{{ error }}"</strong> already exists. Try a different title.</div>
+        {% endif %}
+        
+        <div class="form-title">
+            {# {{ form.title.label }}: #}
+            {{ form.title }}
+            <button type="submit">Create</button>
+        </div>
+
+        {{ form.content }}
+
+    </form>
+    
+
+{% endblock %}

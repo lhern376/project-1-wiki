@@ -1,0 +1,24 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block nav %}
+<br>
+<hr>
+<div class="edit-button">
+    <a href="{% url 'edit' title %}" class="custom-form"><button>Edit Page</button></a>
+</div>
+{% endblock %}
+
+{% block body %}
+    <!-- <h1>{{ title }}</h1>
+    <hr>
+    <div class="edit-button">
+        <a href="{% url 'edit' title %}" class="custom-form"><button>Edit</button></a>
+    </div>  -->
+    <div class="page-width">
+        {{ entry_content|safe }}
+    </div>
+{% endblock %}

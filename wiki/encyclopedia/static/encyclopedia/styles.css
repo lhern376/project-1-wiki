@@ -1,0 +1,153 @@
+/* ========================== General Styles ========================== */
+body {
+    margin: 0;
+    background-color: white;
+}
+
+code {
+    white-space: pre;
+}
+
+h1 {
+    margin-top: 0px;
+    padding-top: 20px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+
+/* ========================== Sidebar Styles ========================== */
+
+.search {
+    width: default;
+    font-size: 15px;
+    line-height: 15px;
+}
+
+.sidebar {
+    display: block;
+
+    background-color: #f0f0f0;
+
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 20px;
+}
+
+.sidebar h2 {
+    margin-top: 5px;
+}
+
+
+@media screen and (min-width: 768px) {
+
+    .my-grid {
+        display: grid;
+        grid-template-columns: 215px 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+
+        height: 100vh;
+    }
+
+    .search {
+        width: 100%;
+    }
+}
+
+/* <<<<<<<<<<<<<<<<<<< ========================== Main Styles ========================== >>>>>>>>>>>>>>>>>>> */
+
+.main {
+    padding-left: 15px;
+    padding-right: 15px;
+
+    margin-bottom: 50px;
+}
+
+/* ==========================  Entry Page Styles ========================== */
+
+.edit-button {
+    margin-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+
+    .page-width {
+        width: 85%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+
+    .page-width {
+        width: 90%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .page-width {
+        width: 70%;
+    }
+}
+
+
+/* ========================== New Page Form Styles ========================== */
+
+textarea {
+    height: 80vh;
+    width: 80%;
+    resize: none;
+}
+
+.custom-form .form-title {
+    width: 80%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.custom-form .form-error {
+    color: red;
+}
+
+.custom-form button {
+    border-radius: 4px;
+}
+
+.custom-form button:hover {
+    box-shadow: 0 1px 1px #8d8d8d;
+}
+
+@media screen and (max-width: 768px) {
+
+    .custom-form .form-title,
+    .custom-form textarea {
+        /* width: 90%; */
+        width: 100%;
+    }
+}
+
+/* ========================== Edit Page Form Styles ========================== */
+
+.custom-form .form-edit {
+    width: 80%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media screen and (max-width: 768px) {
+
+    .custom-form .form-edit {
+        /* width: 90%; */
+        width: 100%;
+    }
+}
