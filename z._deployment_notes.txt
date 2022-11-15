@@ -1,4 +1,9 @@
 
+----    Gunicorn usage (alternative to Apache and mod_wsgi)
+
+        $ gunicorn wiki.wsgi:application -b 0.0.0.0:8083 --daemon -w 3
+
+
 -------------------------------------------------------------------------------------------------------
 ----    Things to tweak on the project files
 
