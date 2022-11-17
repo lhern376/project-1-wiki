@@ -54,7 +54,7 @@ ul {
     .sidebar {
         position: fixed;
         top: 0;
-
+        width: 215px;
         height: 100vh;
     }
 
